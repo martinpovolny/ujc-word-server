@@ -26,6 +26,7 @@ rng.Collapse( win32.constants.wdCollapseEnd)
 
 # Insert a hard page break.
 
+# https://docs.microsoft.com/en-us/previous-versions/office/developer/office-2003/aa211923(v%3Doffice.11)
 rng.InsertBreak( win32.constants.wdPageBreak )
 
 # Insert more words.

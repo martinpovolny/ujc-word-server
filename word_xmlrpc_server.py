@@ -12,6 +12,7 @@ class WordProxy:
     def setup_locals(self, doc_id):
         #self.text   = self.docs[doc_id]['text']
         self.doc    = self.docs[doc_id]['doc']
+        self.rng    = self.docs[doc_id]['rng']
         #self.cursor = self.docs[doc_id]['cursor']
 
 
@@ -29,7 +30,8 @@ class WordProxy:
         self.docs[doc_id] = {
             #'text':   self.text,
             #'cursor': self.cursor,
-            'doc':    doc
+            'rng': doc.Range(0,0),
+            'doc': doc
         }
 
         return doc_id
@@ -38,10 +40,12 @@ class WordProxy:
     def set_char_weight(self, doc, weight):
         self.setup_locals(doc)
         if weight == 'NORMAL':
-            w = NORMAL
+            #w = NORMAL
+            self.rng.Bold = False
         if weight == 'BOLD':
-            w = BOLD
-        self.cursor.setPropertyValue ( "CharWeight", w )
+            #w = BOLD
+            self.rng.Bold = True
+        #self.cursor.setPropertyValue ( "CharWeight", w )
         return 1
 
 
@@ -77,13 +81,14 @@ class WordProxy:
 
     def insert_control_character(self, doc, char):
         self.setup_locals(doc)
-        if char == 'HARD_SPACE':
-            c = HARD_SPACE
+        #if char == 'HARD_SPACE':
+            #c = HARD_SPACE
         if char == 'PARAGRAPH_BREAK':
-            c = PARAGRAPH_BREAK
-        if char == 'SOFT_HYPHEN':
-            c = SOFT_HYPHEN
-        self.text.insertControlCharacter( self.cursor, c, 0 )
+            #c = PARAGRAPH_BREAK
+            rng.InsertBreak( win32.constants.wdLineBreak )
+        #if char == 'SOFT_HYPHEN':
+            #c = SOFT_HYPHEN
+        #self.text.insertControlCharacter( self.cursor, c, 0 )
         return 1
 
 
@@ -96,7 +101,12 @@ class WordProxy:
 
     def put_text( self, doc, text ):
         self.setup_locals(doc)
-        self.text.insertString( self.cursor, text, 0 );
+        #self.text.insertString( self.cursor, text, 0 );
+
+        #self.rng.Collapse( win32.constants.wdCollapseEnd )
+        self.rng.Text = text
+        self.rng.Collapse( win32.constants.wdCollapseEnd )
+
         return 1
 
 
